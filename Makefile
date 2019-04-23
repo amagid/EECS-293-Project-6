@@ -10,11 +10,11 @@ test:
 		echo ; echo ; \
 		echo "===== Methods >= 3 Complexity Below =====" ; \
 		echo ; \
-		find ./radio/*.py | xargs -L1 python3 -m mccabe --min=4; \
+		find ./typed_parser/*.py | xargs -L1 python3 -m mccabe --min=4; \
 		echo ; echo ; \
 		echo "===== Tests > 4 Complexity Below =====" ; \
 		echo ; \
-		find ./radio/test/*.py | xargs -L1 python3 -m mccabe --min=6; \
+		find ./typed_parser/test/*.py | xargs -L1 python3 -m mccabe --min=6; \
 		echo ; echo ; \
 	)
 
