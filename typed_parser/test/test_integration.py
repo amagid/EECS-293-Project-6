@@ -42,7 +42,8 @@ BASIC_RULE_TEST_CASES = [
     ('a+-d', 'int'),
     ('a/c', None),
     ('m+(a*d+a-d)', 'brettjohnson'),
-    ('a+a+a+a+a+a+a+d+a+d+a+d+a+d+a+a+a+a+a+a+a+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d', 'int')
+    ('a+a+a+a+a+a+a+d+a+d+a+d+a+d+a+a+a+a+a+a+a+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d', 'int'),
+    ('c+a+a+a+a+a+a+d+a+d+a+d+a+d+a+a+a+a+a+a+a+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d', 'string')
 ]
 
 @pytest.mark.parametrize(
