@@ -24,59 +24,6 @@ Welcome to TypedParser's documentation!
    :private-members:
    :undoc-members:
 
-.. automodule:: typed_parser.abstract_token
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.cache
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.connector
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.internal_node
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.leaf_node
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.node
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.non_terminal_symbol
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.parse_state
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.symbol_sequence
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.terminal_symbol
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.tokenclass
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.utils
-   :members:
-   :private-members:
-
-.. automodule:: typed_parser.variable
-   :members:
-   :private-members:
-
-
 
 Indices and tables
 ==================
