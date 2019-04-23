@@ -27,19 +27,14 @@ class TypeParser:
     def expression_type(self, node):
         if not node:
             return None
-        print('parsing node: ' + str(node))
         if not node.get_children():
-            print('node has no children')
             return self._subexpression_type(self._node_to_expression(node))
         else:
-            print('node has children')
             child_types = self._child_types(node.get_children())
             while len(child_types) > 1:
-                print('child_types: ' + str(child_types))
                 next_expression = self._next_expression(child_types)
                 next_expression_type = self._subexpression_type(next_expression)
                 child_types.insert(0, next_expression_type)
-            print('child_types: ' + str(child_types))
             return child_types[0]
 
     def _node_to_expression(self, node):
@@ -49,11 +44,8 @@ class TypeParser:
         return expression
 
     def _subexpression_type(self, expression):
-        print('checking expression: ' + str(expression))
         for type_rule in self._type_rules[len(expression)]:
-            print('checking type rule: ' + str(type_rule._input_types) + ', ' + str(type_rule._output_type))
             applied_type = type_rule.apply(expression)
-            print('result was: ' + str(applied_type))
             if applied_type is not None:
                 return applied_type
         return None
@@ -68,7 +60,6 @@ class TypeParser:
         expression = []
         while len(expression) < 3:
             if self._has_unary_negation(child_types, expression):
-                print('had unary negation')
                 expression.append(self._subexpression_type(child_types[:2]))
                 [child_types.pop(0) for _ in [0,1]]
             else:
@@ -76,5 +67,4 @@ class TypeParser:
         return expression
 
     def _has_unary_negation(self, child_types, expression):
-        print('checking for unary negation: ' + str(child_types) + ', ' + str(expression))
         return len(expression) in [0,2] and child_types[0] == '-'

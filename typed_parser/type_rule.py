@@ -18,7 +18,6 @@ class TypeRule:
 
         # Check if this rule is a wildcard rule - for ease of use
         if '?' in input_types:
-            print('creating wildcard rule: ' + str(input_types) + ', ' + str(output_type))
             self._wildcard_index = self._input_types.index('?')
         else:
             self._wildcard_index = None
@@ -27,7 +26,6 @@ class TypeRule:
         if input_token_list == self._input_types:
             return self._output_type
         elif self._wildcard_index is not None and self._wildcard_matches(input_token_list):
-            print('wildcard rule matched: ' + str(self._input_types) + ', ' + str(input_token_list))
             return self._apply_wildcard(input_token_list[self._wildcard_index])
         else:
             return None
