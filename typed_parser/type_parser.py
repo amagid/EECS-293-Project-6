@@ -42,16 +42,16 @@ class TypeParser:
             child_types.append(self.expression_type(child))
         return child_types
 
-#     _NEXT_EXPRESSION(child_types):
-#         Initialize expression to an empty list
-#         While expression length < 3
-#             If _HAS_UNARY_NEGATION(expression, child_types)
-#                 Add _SUBEXPRESSION_TYPE(child_types[:2]) to expression
-#                 Pop next two elements from child_types
-#             Else
-#                 Add next child type to expression
-#                 Pop next element from child_types
-#         Return expression
+    def next_expression(child_types):
+        expression = []
+        while len(expression) < 3:
+            if self._has_unary_negation(child_types, expression):
+                expression.append(self._subexpression_type(child_types[:2])
+                child_types = child_types[2:]
+            else:
+                expression.append(child)
+                child_types.pop(0)
+        return expression
 
 #     _HAS_UNARY_NEGATION(expression, child_types):
 #         Return True If (expression length is 0 or 2) and next child type is MINUS
