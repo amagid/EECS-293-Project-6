@@ -25,6 +25,8 @@ class TypeParser:
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
     def expression_type(self, node):
+        if not node:
+            return None
         print('parsing node: ' + str(node))
         if not node.get_children():
             print('node has no children')
