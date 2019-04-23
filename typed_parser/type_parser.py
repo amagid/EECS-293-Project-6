@@ -19,15 +19,15 @@ class TypeParser:
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
-#     EXPRESSION_TYPE(Node)
-#         If Node has no children
-#             return _SUBEXPRESSION_TYPE(Node.to_list())
-#         Else
-#             Store the output of _CHILD_TYPES(Node.children()) in child_types
-#             While child_types has length > 1
-#                 Store _NEXT_EXPRESSION(child_types) in next_expression
-#                 Store _SUBEXPRESSION_TYPE(next_expression) in next_expression_type
-#                 Prepend child_types with next_expression_type
+    def expression_type(node)
+        if not node.is_fruitful():
+            return self._subexpression_type(node.to_list())
+        else:
+            child_types = self._child_types(node.get_children())
+            while len(child_types) > 1:
+                next_expression = self._next_expression(child_types)
+                next_expression_type = self._subexpression_type(next_expression)
+                child_types.insert(0, next_expression_type)
 
 #     _SUBEXPRESSION_TYPE(expression):
 #         For each TypeRule matching the expression's length
@@ -35,7 +35,7 @@ class TypeParser:
 #             If output of TypeRule.apply() is not None, RETURN it immediately.
 #         Return None, since we failed to match any TypeRule.
 
-#     _CHILD_TYPES(children):
+#     _child_types(children):
 #         Initialize child_types to an empty list
 #         For each child of this Node
 #             Append EXPRESSION_TYPE(child) to child_types
