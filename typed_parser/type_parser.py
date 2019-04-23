@@ -21,13 +21,20 @@ class TypeParser:
 
     def expression_type(node)
         if not node.is_fruitful():
-            return self._subexpression_type(node.to_list())
+            return self._subexpression_type(self._node_to_expression(node))
         else:
             child_types = self._child_types(node.get_children())
             while len(child_types) > 1:
                 next_expression = self._next_expression(child_types)
                 next_expression_type = self._subexpression_type(next_expression)
                 child_types.insert(0, next_expression_type)
+            return child_types[0]
+
+    def _node_to_expression(node):
+        expression = []
+        for child in node.to_list():
+            expression.append(str(child))
+        return expression
 
     def _subexpression_type(expression):
         for type_rule in self._type_rules[len(expression)]:
@@ -53,5 +60,5 @@ class TypeParser:
                 child_types.pop(0)
         return expression
 
-#     _HAS_UNARY_NEGATION(expression, child_types):
-#         Return True If (expression length is 0 or 2) and next child type is MINUS
+    def _has_unary_negation(expression, child_types):
+        return len(expression) in [0,2] and child_types[0] == '-'
