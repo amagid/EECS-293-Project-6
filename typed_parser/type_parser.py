@@ -6,7 +6,7 @@ from typed_parser.type_rule import TypeRule
 
 class TypeParser:
 
-    _TYPE_RULES = {
+    _type_rules = {
         1: [],
         2: [],
         3: []
@@ -15,7 +15,7 @@ class TypeParser:
     def import_types(typerule_list, variable_types = []):
         all_type_rules = variable_types + typerule_list
         for type_rule in all_type_rules:
-            self._TYPE_RULES[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
+            self._type_rules[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
@@ -29,11 +29,12 @@ class TypeParser:
                 next_expression_type = self._subexpression_type(next_expression)
                 child_types.insert(0, next_expression_type)
 
-#     _SUBEXPRESSION_TYPE(expression):
-#         For each TypeRule matching the expression's length
-#             Attempt to apply this TypeRule to our expression.
-#             If output of TypeRule.apply() is not None, RETURN it immediately.
-#         Return None, since we failed to match any TypeRule.
+    def _subexpression_type(expression):
+        for type_rule in self._type_rules[len(expression)]:
+            applied_type = type_rule.apply(expression)
+            if applied_type is not None:
+                return applied_type
+        return None
 
 #     _child_types(children):
 #         Initialize child_types to an empty list
