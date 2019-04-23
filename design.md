@@ -13,24 +13,9 @@ Instances of the TypeRule class define how to determine the type of an expressio
 - If there are two string input tokens, the first **must** be MINUS and the second **must** be a type.
 - If there are three string input tokens, the first and third **must** be types and the middle **must** be a connector.
 
-The TypeRule exposes a TypeRule.apply(Node) method which returns the type resulting from applying the given TypeRule on the expression rooted at Node, as well as the number of tokens that were matched. This method returns Type.INVALID if the TypeRule cannot be applied to this Node.
+The TypeRule exposes a TypeRule.apply(Node) method which returns the type resulting from applying the given TypeRule on the expression rooted at Node, as well as the number of tokens that were matched. This method returns None if the TypeRule cannot be applied to this Node.
 
 class TypeRule:
-
-    STATIC TYPE_RULES is a dictionary which sorts all available TypeRules by their input lengths (1, 2, and 3)
-
-    STATIC IMPORT_TYPES(typerule_list):
-        For each type rule in the typerule_list
-            Create a new TypeRule instance for this rule
-            Sort the new instance into the TYPE_RULES dictionary by input length
-        Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES at the end to handle parentheses-enclosed single types
-
-    STATIC TYPE(input_token_list):
-        For each TypeRule in the TYPE_RULES for the input list's length
-            If the current TypeRule.APPLY() does not return None, return its returned type
-
-        Return None if execution has not yet found a matching TypeRule
-
     INIT(input_types, output_type):
         Store the input and output types internally, assert that they are all valid including in their organization
 
@@ -45,32 +30,63 @@ This is the entry point of the application. TypeParser provides a static entry m
 TypeParser.determineExpressionType() takes a starting Node and Variable type dictionary as arguments and performs a recursive depth-first search starting at the argument Node to determine the type of the whole expression from the bottom up. It uses the passed-in Variable type dictionary (Variables as keys, Types as values) to convert Variables to Types as necessary.
 
 class TypeParser:
-    DETERMINE_EXPRESSION_TYPE(Node, variable_types, connector_type_rules):
-        Store variable_types internally
-        Store connector_type_rules internally
-        Return the output of _SUBTREE_TYPE(Node)
 
-    _SUBTREE_TYPE(Node)
-        Store the output of _CHILD_TYPES(Node) in child_types
-        Look up the list of potential TypeRules in connector_type_rules dictionary based on this Node's Connector
-        For each potential TypeRule
-            Attempt to apply this TypeRule to our Node and its child_types.
-            If output of TypeRule.apply() is not Type.INVALID, RETURN it immediately.
-        Return Type.INVALID, since we failed to match any TypeRule.
+    _TYPE_RULES is a dictionary which sorts all available TypeRules by their input lengths (1, 2, and 3)
 
-    _CHILD_TYPES(Node):
+    IMPORT_TYPES(variable_types, typerule_list):
+        For each variable type and type rule in the input lists
+            Create a new TypeRule instance for this rule
+            Sort the new instance into the TYPE_RULES dictionary by input length
+        Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
+        Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
+
+    _TYPE(input_token_list):
+        For each TypeRule in the TYPE_RULES for the input list's length
+            If the current TypeRule.APPLY() does not return None, return its returned type
+
+        Return None if execution has not yet found a matching TypeRule
+
+    EXPRESSION_TYPE(Node)
+        If Node has no children
+            return _SUBEXPRESSION_TYPE(Node.to_list())
+        Else
+            Store the output of _CHILD_TYPES(Node.children()) in child_types
+            While child_types has length > 1
+                Store _NEXT_EXPRESSION(child_types) in next_expression
+                Store _SUBEXPRESSION_TYPE(next_expression) in next_expression_type
+                Prepend child_types with next_expression_type
+
+    _SUBEXPRESSION_TYPE(expression):
+        For each TypeRule matching the expression's length
+            Attempt to apply this TypeRule to our expression.
+            If output of TypeRule.apply() is not None, RETURN it immediately.
+        Return None, since we failed to match any TypeRule.
+
+    _CHILD_TYPES(children):
         Initialize child_types to an empty list
         For each child of this Node
-            If the child is a leaf node, get its type from _LEAF_TYPE()
-            If the child is an internal node, call _SUBTREE_TYPE() on it and store the output in child_types
+            Append EXPRESSION_TYPE(child) to child_types
+        return child_types
 
-    _LEAF_TYPE(Node, variable_types):
-        Look up this Node in the variable_types dictionary. If the Node is contained there, return the associated Type.
-        Else, return Type.INVALID
+    _NEXT_EXPRESSION(child_types):
+        Initialize expression to an empty list
+        While expression length < 3
+            If _HAS_UNARY_NEGATION(expression, child_types)
+                Add _SUBEXPRESSION_TYPE(child_types[:2]) to expression
+                Pop next two elements from child_types
+            Else
+                Add next child type to expression
+                Pop next element from child_types
+        Return expression
+
+    _HAS_UNARY_NEGATION(expression, child_types):
+        Return True If (expression length is 0 or 2) and next child type is MINUS
+            
+        
 
 ## Error Handling
 
-The general error handling approach is to encapsulate the validity or invalidity of a given expression via the Type.INVALID enum member. As the TypeParser searches the parse tree, each time it finds a parsable expression part (a Node where all direct children have defined Types), it will pass this Node into its TypeRules. If no suitable Type can be determined, the Type will be INVALID, thereby blocking most errors from bubbling up immediately. The TypeParser will be somewhat fail-fast, meaning that if it encounters an INVALID expression, it will cancel its search and return the INVALID type for the input expression as a whole. This will stop any errors from causing cascading malfunctions in the parser.
+The general error handling approach is to encapsulate the validity or invalidity of a given expression via the None enum member. As the TypeParser searches the parse tree, each time it finds a parsable expression part (a Node where all direct children have defined Types), it will pass this Node into its TypeRules. If no suitable Type can be determined, the Type will be INVALID, thereby blocking most errors from bubbling up immediately. The TypeParser will be somewhat robust, allowing for the addition of type rules that include INVALID types as inputs. However, if no such rules are defined or matched, INVALID types will inevitably bubble up and cause the root type to be INVALID. This will inherently gracefully handle most errors.
 
 ## Testing Approach
 
