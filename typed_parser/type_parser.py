@@ -30,8 +30,8 @@ class TypeParser:
 
         Params:
 
-        - *typerule_list*: A `list` of type rules, specified as: `[[input_types...], output_type]` Types should be specified as strings
-        - *variable_types*: A `list` of variable types, in the same format as the type rules.
+        - `list` *typerule_list* - A `list` of type rules, specified as: `[[input_types...], output_type]` Types should be specified as strings
+        - `list` *variable_types* - A `list` of variable types, in the same format as the type rules.
 
         Returns:
 
@@ -58,7 +58,7 @@ class TypeParser:
 
         Params:
 
-        - `InternalNode` *node*: Root node of a parse tree to reduce to a type
+        - `InternalNode` *node* - Root node of a parse tree to reduce to a type
 
         Returns:
         
@@ -72,7 +72,8 @@ class TypeParser:
         if not node.get_children():
             return self._subexpression_type(self._node_to_expression(node))
         else:
-            # Iteratively calculate the type of this node. Recurse on children.
+            # Iteratively consume expression to calculate the type of this node.
+            # Recurse on complex children.
             child_types = self._child_types(node.get_children())
             while len(child_types) > 1:
                 next_expression = self._next_expression(child_types)
@@ -81,12 +82,42 @@ class TypeParser:
             return child_types[0]
 
     def _node_to_expression(self, node):
+        """
+        Convert a Node object into a more parse-friendly list of `string` type
+        tokens. Assumes that all node children are leaf nodes.
+
+        Params:
+
+        - `Node` *node*
+
+        Returns:
+
+        - `list<string>`
+
+        """
+
         expression = []
         for child in node.to_list():
             expression.append(str(child))
         return expression
 
     def _subexpression_type(self, expression):
+        """
+        Calculate the type of a leaf-level expression. That is, an expression
+        with no complex child nodes that cannot be described by a single string
+        type.
+
+        Params:
+
+        - `list<string>` *expression*
+
+        Returns:
+
+        - `string` - The type of the expression, if valid
+        - `None` - None, if no type rules match the expression
+        """
+
+        # Return the first matched TypeRule's output type, or None if no match
         for type_rule in self._type_rules[len(expression)]:
             applied_type = type_rule.apply(expression)
             if applied_type is not None:
@@ -94,14 +125,45 @@ class TypeParser:
         return None
 
     def _child_types(self, children):
+        """
+        Convert all nodes in an expression list to their associated types.
+        This search handles the bulk of the parser's recursion, as it will
+        start recursion on any node in the expression which is not a leaf node.
+
+        Params:
+
+        - `list<string>` *children* - The expression layer to parse
+
+        Returns:
+
+        - `list<string>` - The types of the original expression nodes
+        """
+
+        # Recursively determine types on each child node
         child_types = []
         for child in children:
             child_types.append(self.expression_type(child))
         return child_types
 
     def _next_expression(self, child_types):
+        """
+        Get the next valid simple expression from the current layer of the tree.
+        This takes care of the iteration through simplified layers such as
+        `a+b+c+d`, as it will first match `a+b`, then that `*result* +c`, and so on.
+
+        Params:
+
+        - `list<string>` *child_types* - The whole expression layer as a list of types
+
+        Returns:
+
+        - `list<string>` - The next valid simple expression
+        """
+
+        # Consume child_types from front to build expression
         expression = []
         while len(expression) < 3:
+            # An expression can be longer than 3 tokens if some are unary-negated
             if self._has_unary_negation(child_types, expression):
                 expression.append(self._subexpression_type(child_types[:2]))
                 [child_types.pop(0) for _ in [0,1]]
@@ -110,4 +172,18 @@ class TypeParser:
         return expression
 
     def _has_unary_negation(self, child_types, expression):
+        """
+        Check whether the next part of the potential expression contains a unary negation.
+
+        Params:
+
+        - `list<string>` *child_types* - The expression that is being consumed and converted
+        - 'list<string>` *expression* - The expression that is being built
+
+        Returns:
+
+        - `boolean`
+
+        """
+        
         return len(expression) in [0,2] and child_types[0] == '-'
