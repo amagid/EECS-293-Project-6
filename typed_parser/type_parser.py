@@ -27,12 +27,16 @@ class TypeParser:
         """
         import_types is used to parse and prepare the type rules that will be
         used in calculating the types of expression trees.
-        This method takes two arguments:
+        
 
+        Params:
         - *typerule_list*: A `list` of type rules, specified as:
           `[[input_types...], output_type]` Types should be specified as strings
         - *variable_types*: A `list` of variable types, in the same format as the
           type rules.
+
+        Returns:
+        - `None`
         """
 
         # For simplicity, variable types are treated exactly the same as type rules
@@ -47,11 +51,25 @@ class TypeParser:
         self._type_rules[3].append(TypeRule(['(', '?', ')'], '?'))
 
     def expression_type(self, node):
+        """
+        expression_type is the main entry point for the package. Call
+        TypeParser.expression_type and pass in a parse tree to have the root
+        type of the tree calculated via a Depth-First Search of the tree.
+
+        Params:
+        - `InternalNode` *node*: Root node of a parse tree to reduce to a type
+
+        Returns:
+        - `string` - The root type of the parse tree
+        """
+
+        # End recursion & return this node's type if it is a leaf or nonexistent
         if not node:
             return None
         if not node.get_children():
             return self._subexpression_type(self._node_to_expression(node))
         else:
+            # Iteratively calculate the type of this node. Recurse on children.
             child_types = self._child_types(node.get_children())
             while len(child_types) > 1:
                 next_expression = self._next_expression(child_types)
