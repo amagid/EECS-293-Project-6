@@ -23,3 +23,7 @@ def test_to_list_with_connector():
     conn = Connector.build(TerminalSymbol.PLUS)
     ln = LeafNode.build(conn)
     assert ln.to_list() == [conn]
+
+def test_is_fruitful_returns_true():
+    ln = LeafNode.build(Connector.build(TerminalSymbol.PLUS))
+    assert ln.is_fruitful()
