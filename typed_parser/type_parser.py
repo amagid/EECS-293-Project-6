@@ -52,7 +52,7 @@ class TypeParser:
             child_types.append(self.expression_type(child))
         return child_types
 
-    def next_expression(self, child_types):
+    def _next_expression(self, child_types):
         expression = []
         while len(expression) < 3:
             if self._has_unary_negation(child_types, expression):
