@@ -2,15 +2,22 @@
 # - There must be **exactly one** string output token - an expression must become a type, not another expression.
 # - There must be **one, two, or three** string input tokens.
 # - If there is only one string input token, it **must not** be equal to the string output token.
-# - If there are two string input tokens, the first **must** be MINUS and the second **must** be a type.
-# - If there are three string input tokens, the first and third **must** be types and the middle **must** be a connector.
+# - If there are two string input tokens, the first **must** be MINUS.
 
-# The TypeRule class exposes a TypeRule.apply(Node) method which returns the type resulting from applying the given TypeRule on the expression rooted at Node, as well as the number of tokens that were matched. This method returns None if the TypeRule cannot be applied to this Node.
+class TypeRule:
+    def __init__(input_types, output_type):
+        # Guard against any bad type rule inputs
+        assert type(output_type) is str, "There must be only one output type, and it must be represented by a string"
+        assert type(input_types) is list, "Input Types must be in a list"
+        assert len(input_types) in range(1, 4), "The number of input types must be on [1,3]"
+        if len(input_types) == 2:
+            assert input_types[0] == '-', "Two-input rules must begin with '-' for unary negation"
 
-# class TypeRule:
-    # INIT(input_types, output_type):
-        # Store the input and output types internally, assert that they are all valid including in their organization
+        self._input_types = input_types
+        self._output_type = output_type
 
-    # APPLY(input_token_list):
-        # If the input_token_list matches this TypeRule's input token list, return this TypeRule's output type
-        # Else, return None
+    def apply(input_token_list):
+        if input_token_list == self._input_types:
+            return self._output_type
+        else
+            return None
