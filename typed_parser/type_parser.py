@@ -19,7 +19,7 @@ class TypeParser:
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
-    def expression_type(node)
+    def expression_type(node):
         if not node.is_fruitful():
             return self._subexpression_type(self._node_to_expression(node))
         else:
@@ -53,7 +53,7 @@ class TypeParser:
         expression = []
         while len(expression) < 3:
             if self._has_unary_negation(child_types, expression):
-                expression.append(self._subexpression_type(child_types[:2])
+                expression.append(self._subexpression_type(child_types[:2]))
                 child_types = child_types[2:]
             else:
                 expression.append(child)

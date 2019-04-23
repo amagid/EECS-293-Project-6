@@ -19,5 +19,5 @@ class TypeRule:
     def apply(input_token_list):
         if input_token_list == self._input_types:
             return self._output_type
-        else
+        else:
             return None
