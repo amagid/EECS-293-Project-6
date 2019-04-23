@@ -15,7 +15,9 @@ def test_integration():
     type_parser = TypeParser()
     type_parser.import_types(TYPE_RULES, VARIABLE_TYPES)
 
-    parse_tree = NonTerminalSymbol.parse_string_input('a+b')
+    parse_tree = NonTerminalSymbol.parse_string_input('a+boo')
+
+    print(parse_tree)
 
     final_type = type_parser.expression_type(parse_tree)
     print(final_type)

@@ -19,18 +19,24 @@ class TypeParser:
         all_type_rules = variable_types + typerule_list
         for type_rule in all_type_rules:
             self._type_rules[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
+        self._type_rules[1].append(TypeRule(['?'], '?'))
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
     def expression_type(self, node):
+        print('parsing node: ' + str(node))
         if not node.get_children():
+            print('node has no children')
             return self._subexpression_type(self._node_to_expression(node))
         else:
+            print('node has children')
             child_types = self._child_types(node.get_children())
             while len(child_types) > 1:
+                print('child_types: ' + str(child_types))
                 next_expression = self._next_expression(child_types)
                 next_expression_type = self._subexpression_type(next_expression)
                 child_types.insert(0, next_expression_type)
+            print('child_types: ' + str(child_types))
             return child_types[0]
 
     def _node_to_expression(self, node):
@@ -40,8 +46,11 @@ class TypeParser:
         return expression
 
     def _subexpression_type(self, expression):
+        print('checking expression: ' + str(expression))
         for type_rule in self._type_rules[len(expression)]:
+            print('checking type rule: ' + str(type_rule._input_types) + ', ' + str(type_rule._output_type))
             applied_type = type_rule.apply(expression)
+            print('result was: ' + str(applied_type))
             if applied_type is not None:
                 return applied_type
         return None
