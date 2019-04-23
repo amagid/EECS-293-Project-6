@@ -2,16 +2,22 @@
 
 # TypeParser.determineExpressionType() takes a starting Node and Variable type dictionary as arguments and performs a recursive depth-first search starting at the argument Node to determine the type of the whole expression from the bottom up. It uses the passed-in Variable type dictionary (Variables as keys, Types as values) to convert Variables to Types as necessary.
 
-# class TypeParser:
+from typed_parser.type_rule import TypeRule
 
-#     _TYPE_RULES is a dictionary which sorts all available TypeRules by their input lengths (1, 2, and 3)
+class TypeParser:
 
-#     IMPORT_TYPES(variable_types, typerule_list):
-#         For each variable type and type rule in the input lists
-#             Create a new TypeRule instance for this rule
-#             Sort the new instance into the TYPE_RULES dictionary by input length
-#         Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
-#         Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
+    _TYPE_RULES = {
+        1: [],
+        2: [],
+        3: []
+    }
+
+    def import_types(typerule_list, variable_types = []):
+        all_type_rules = variable_types + typerule_list
+        for type_rule in all_type_rules:
+            self._TYPE_RULES[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
+        # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
+        # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
 #     _TYPE(input_token_list):
 #         For each TypeRule in the TYPE_RULES for the input list's length
