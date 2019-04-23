@@ -46,12 +46,8 @@ class NonTerminalSymbol(Enum):
         # Else, continue parsing using this SymbolSequence
         state = symbol_seq.match(token_list)
 
-        # If the parse succeeded, return the resulting ParseState
-        if state is not FAILURE:
-            return state
-        
-        # Parse still failed, return FAILURE state
-        return FAILURE
+        # Return the resulting ParseState
+        return state
 
     def _get_next_production(self, token_list):
         token_type = None
