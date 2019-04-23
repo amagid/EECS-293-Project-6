@@ -14,8 +14,9 @@ Welcome to TypedParser's documentation!
    :members:
    :undoc-members:
 
-.. autoclass:: typed_parser.type_parser
+.. automodule:: typed_parser.type_parser
    :members:
+   :private-members:
    :undoc-members:
 
 .. autoclass:: typed_parser.type_rule

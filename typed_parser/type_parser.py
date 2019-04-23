@@ -6,6 +6,9 @@ from typed_parser.type_rule import TypeRule
 
 class TypeParser:
 
+    #: _type_rules is used to keep track of all available type conversion
+    #: rules. It is a dictionary containing lists of TypeRules, sorted by the
+    #: length of their input patterns.
     _type_rules = {
         1: [],
         2: [],
@@ -13,16 +16,22 @@ class TypeParser:
     }
 
     def __init__(self):
+        """
+        The TypeParser __init__ method is empty to allow for better testing.
+        To use the TypeParser, create it, then run import_types, and then 
+        run expression_type on a parse tree.
+        """
         pass
 
     def import_types(self, typerule_list, variable_types = []):
+        """
+        Docstring for the import_types method
+        """
         all_type_rules = variable_types + typerule_list
         for type_rule in all_type_rules:
             self._type_rules[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
         self._type_rules[1].append(TypeRule(['?'], '?'))
         self._type_rules[3].append(TypeRule(['(', '?', ')'], '?'))
-        # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
-        # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
     def expression_type(self, node):
         if not node:
