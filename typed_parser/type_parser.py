@@ -23,7 +23,7 @@ class TypeParser:
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
     def expression_type(self, node):
-        if not node.is_fruitful():
+        if not node.get_children():
             return self._subexpression_type(self._node_to_expression(node))
         else:
             child_types = self._child_types(node.get_children())
