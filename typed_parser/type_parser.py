@@ -30,9 +30,9 @@ class TypeParser:
         This method takes two arguments:
 
         - *typerule_list*: A `list` of type rules, specified as:
-            `[[input_types...], output_type]` Types should be specified as strings
+          `[[input_types...], output_type]` Types should be specified as strings
         - *variable_types*: A `list` of variable types, in the same format as the
-            type rules.
+          type rules.
         """
 
         # For simplicity, variable types are treated exactly the same as type rules
