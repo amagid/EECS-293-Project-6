@@ -5,7 +5,7 @@
 # - If there are two string input tokens, the first **must** be MINUS.
 
 class TypeRule:
-    def __init__(input_types, output_type):
+    def __init__(self, input_types, output_type):
         # Guard against any bad type rule inputs
         assert type(output_type) is str, "There must be only one output type, and it must be represented by a string"
         assert type(input_types) is list, "Input Types must be in a list"
@@ -16,7 +16,7 @@ class TypeRule:
         self._input_types = input_types
         self._output_type = output_type
 
-    def apply(input_token_list):
+    def apply(self, input_token_list):
         if input_token_list == self._input_types:
             return self._output_type
         else:
