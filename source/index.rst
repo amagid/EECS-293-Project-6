@@ -19,61 +19,62 @@ Welcome to TypedParser's documentation!
    :private-members:
    :undoc-members:
 
-.. autoclass:: typed_parser.type_rule
+.. automodule:: typed_parser.type_rule
    :members:
+   :private-members:
    :undoc-members:
 
-.. autoclass:: typed_parser.abstract_token
+.. automodule:: typed_parser.abstract_token
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.cache
+.. automodule:: typed_parser.cache
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.connector
+.. automodule:: typed_parser.connector
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.internal_node
+.. automodule:: typed_parser.internal_node
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.leaf_node
+.. automodule:: typed_parser.leaf_node
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.node
+.. automodule:: typed_parser.node
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.non_terminal_symbol
+.. automodule:: typed_parser.non_terminal_symbol
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.parse_state
+.. automodule:: typed_parser.parse_state
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.symbol_sequence
+.. automodule:: typed_parser.symbol_sequence
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.terminal_symbol
+.. automodule:: typed_parser.terminal_symbol
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.tokenclass
+.. automodule:: typed_parser.tokenclass
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.utils
+.. automodule:: typed_parser.utils
    :members:
-   :undoc-members:
+   :private-members:
 
-.. autoclass:: typed_parser.variable
+.. automodule:: typed_parser.variable
    :members:
-   :undoc-members:
+   :private-members:
 
 
 

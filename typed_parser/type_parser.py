@@ -1,10 +1,16 @@
-# This is the entry point of the application. TypeParser provides a static entry method, determineExpressionType, and should not be instantiated. TypeParser contains a static dictionary which organizes available TypeRules by their associated Connector to minimize iteration over non-matching TypeRules.
-
-# TypeParser.determineExpressionType() takes a starting Node and Variable type dictionary as arguments and performs a recursive depth-first search starting at the argument Node to determine the type of the whole expression from the bottom up. It uses the passed-in Variable type dictionary (Variables as keys, Types as values) to convert Variables to Types as necessary.
-
 from typed_parser.type_rule import TypeRule
 
 class TypeParser:
+    """
+    This is the entry point of the application. TypeParser provides a static
+    entry method, expression_type, and should not be instantiated. TypeParser
+    contains a static dictionary which organizes available TypeRules by their
+    associated input token lengths to minimize iteration over non-matching
+    TypeRules. TypeParser.expression_type() takes a starting Node and Variable
+    type dictionary as arguments and performs a recursive depth-first search
+    starting at the argument Node to determine the type of the whole expression
+    from the bottom up.
+    """
 
     #: _type_rules is used to keep track of all available type conversion
     #: rules. It is a dictionary containing lists of TypeRules, sorted by the
