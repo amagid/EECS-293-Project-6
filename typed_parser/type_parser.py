@@ -20,6 +20,7 @@ class TypeParser:
         for type_rule in all_type_rules:
             self._type_rules[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
         self._type_rules[1].append(TypeRule(['?'], '?'))
+        self._type_rules[3].append(TypeRule(['(', '?', ')'], '?'))
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
@@ -65,11 +66,13 @@ class TypeParser:
         expression = []
         while len(expression) < 3:
             if self._has_unary_negation(child_types, expression):
+                print('had unary negation')
                 expression.append(self._subexpression_type(child_types[:2]))
-                child_types = child_types[2:]
+                [child_types.pop(0) for _ in [0,1]]
             else:
                 expression.append(child_types.pop(0))
         return expression
 
-    def _has_unary_negation(self, expression, child_types):
+    def _has_unary_negation(self, child_types, expression):
+        print('checking for unary negation: ' + str(child_types) + ', ' + str(expression))
         return len(expression) in [0,2] and child_types[0] == '-'

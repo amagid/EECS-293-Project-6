@@ -3,19 +3,21 @@ from typed_parser.type_parser import TypeParser
 from typed_parser.non_terminal_symbol import NonTerminalSymbol
 
 TYPE_RULES = [
-    [['int', '+', 'int'], 'int']
+    [['int', '+', 'int'], 'int'],
+    [['-', '?'], '?']
 ]
 
 VARIABLE_TYPES = [
     [['a'], 'int'],
-    [['b'], 'int']
+    [['b'], 'int'],
+    [['c'], 'int']
 ]
 
 def test_integration():
     type_parser = TypeParser()
     type_parser.import_types(TYPE_RULES, VARIABLE_TYPES)
 
-    parse_tree = NonTerminalSymbol.parse_string_input('a+boo')
+    parse_tree = NonTerminalSymbol.parse_string_input('a+-b')
 
     print(parse_tree)
 
