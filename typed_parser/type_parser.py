@@ -25,11 +25,24 @@ class TypeParser:
 
     def import_types(self, typerule_list, variable_types = []):
         """
-        Docstring for the import_types method
+        import_types is used to parse and prepare the type rules that will be
+        used in calculating the types of expression trees.
+        This method takes two arguments:
+
+        - *typerule_list*: A `list` of type rules, specified as:
+            `[[input_types...], output_type]` Types should be specified as strings
+        - *variable_types*: A `list` of variable types, in the same format as the
+            type rules.
         """
+
+        # For simplicity, variable types are treated exactly the same as type rules
         all_type_rules = variable_types + typerule_list
+
+        # Sort all type rules by their input lengths into the _type_rules dict
         for type_rule in all_type_rules:
             self._type_rules[len(type_rule[0])].append(TypeRule(type_rule[0], type_rule[1]))
+
+        # Add wildcard types as lowest priority for cleanup
         self._type_rules[1].append(TypeRule(['?'], '?'))
         self._type_rules[3].append(TypeRule(['(', '?', ')'], '?'))
 

@@ -195,3 +195,6 @@ epub_copyright = copyright
 epub_exclude_files = ['search.html']
 
 
+html_context = {
+    'css_files': ['_static/style.css'],
+}
