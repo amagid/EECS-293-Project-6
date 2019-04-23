@@ -19,12 +19,6 @@ class TypeParser:
         # Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES.3 at the end to handle parentheses-enclosed single types
         # Add a final [["*"], "*"] rule into the TYPE_RULES.1 at the end to handle conversions of types into themselves (simplifies parsing)
 
-#     _TYPE(input_token_list):
-#         For each TypeRule in the TYPE_RULES for the input list's length
-#             If the current TypeRule.APPLY() does not return None, return its returned type
-
-#         Return None if execution has not yet found a matching TypeRule
-
 #     EXPRESSION_TYPE(Node)
 #         If Node has no children
 #             return _SUBEXPRESSION_TYPE(Node.to_list())
