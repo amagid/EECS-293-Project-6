@@ -27,16 +27,16 @@ class TypeParser:
         """
         import_types is used to parse and prepare the type rules that will be
         used in calculating the types of expression trees.
-        
 
         Params:
-        - *typerule_list*: A `list` of type rules, specified as:
-          `[[input_types...], output_type]` Types should be specified as strings
-        - *variable_types*: A `list` of variable types, in the same format as the
-          type rules.
+
+        - *typerule_list*: A `list` of type rules, specified as: `[[input_types...], output_type]` Types should be specified as strings
+        - *variable_types*: A `list` of variable types, in the same format as the type rules.
 
         Returns:
+
         - `None`
+
         """
 
         # For simplicity, variable types are treated exactly the same as type rules
@@ -57,10 +57,13 @@ class TypeParser:
         type of the tree calculated via a Depth-First Search of the tree.
 
         Params:
+
         - `InternalNode` *node*: Root node of a parse tree to reduce to a type
 
         Returns:
+        
         - `string` - The root type of the parse tree
+        
         """
 
         # End recursion & return this node's type if it is a leaf or nonexistent
