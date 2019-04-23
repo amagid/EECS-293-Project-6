@@ -41,6 +41,7 @@ BASIC_RULE_TEST_CASES = [
     ('c*a', 'string'),
     ('a+-d', 'int'),
     ('a/c', None),
+    ('wooooooo', None),
     ('m+(a*d+a-d)', 'brettjohnson'),
     ('a+a+a+a+a+a+a+d+a+d+a+d+a+d+a+a+a+a+a+a+a+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d', 'int'),
     ('c+a+a+a+a+a+a+d+a+d+a+d+a+d+a+a+a+a+a+a+a+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d+d', 'string')
