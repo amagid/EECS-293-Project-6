@@ -6,17 +6,37 @@ The fundamental idea behind this algorithm is to take a valid parse tree and per
 
 #### TypeRule Class
 
-Instances of the TypeRule class define how to determine the type of an expression structure. A TypeRule has an internally-stored Connector and one or two types representing the types of the operands to the Connector.
+Instances of the TypeRule class define how to determine the type of an expression structure. A TypeRule has an internally-stored list of string representations, as well as an internally-stored string type output. TypeRules are generic by design, but have a few restrictions on their input and output tokens:
+- There must be **exactly one** string output token - an expression must become a type, not another expression.
+- There must be **one, two, or three** string input tokens.
+- If there is only one string input token, it **must not** be equal to the string output token.
+- If there are two string input tokens, the first **must** be MINUS and the second **must** be a type.
+- If there are three string input tokens, the first and third **must** be types and the middle **must** be a connector.
 
-The TypeRule exposes a TypeRule.apply(Node) method which returns the Type resulting from applying the given TypeRule on the expression rooted at Node. This method returns Type.INVALID if the TypeRule cannot be applied to this Node.
+The TypeRule exposes a TypeRule.apply(Node) method which returns the type resulting from applying the given TypeRule on the expression rooted at Node, as well as the number of tokens that were matched. This method returns Type.INVALID if the TypeRule cannot be applied to this Node.
 
 class TypeRule:
-    INIT(connector, operand_types, output_type):
-        store the connector, operand, and output types internally, assert that they are all valid
 
-    APPLY(Node, operand_types):
-        if this Node is an InternalNode containing this TypeRule's internally stored Connector and its operands' types match the required types for this TypeRule, return this TypeRule's output_type.
-        Else, return Type.INVALID
+    STATIC TYPE_RULES is a dictionary which sorts all available TypeRules by their input lengths (1, 2, and 3)
+
+    STATIC IMPORT_TYPES(typerule_list):
+        For each type rule in the typerule_list
+            Create a new TypeRule instance for this rule
+            Sort the new instance into the TYPE_RULES dictionary by input length
+        Add a final [["(", "*", ")"], "*"] rule into the TYPE_RULES at the end to handle parentheses-enclosed single types
+
+    STATIC TYPE(input_token_list):
+        For each TypeRule in the TYPE_RULES for the input list's length
+            If the current TypeRule.APPLY() does not return None, return its returned type
+
+        Return None if execution has not yet found a matching TypeRule
+
+    INIT(input_types, output_type):
+        Store the input and output types internally, assert that they are all valid including in their organization
+
+    APPLY(input_token_list):
+        If the input_token_list matches this TypeRule's input token list, return this TypeRule's output type
+        Else, return None
 
 #### TypeParser Class
 
