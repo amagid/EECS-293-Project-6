@@ -18,3 +18,6 @@ def test_variable_str():
 
 def test_variable_representation():
     assert Variable.build('x').representation() == 'x'
+
+def test_variable_not_equal():
+    assert Variable.build('x') != Variable.build('y')
