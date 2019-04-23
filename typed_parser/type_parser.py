@@ -36,11 +36,11 @@ class TypeParser:
                 return applied_type
         return None
 
-#     _child_types(children):
-#         Initialize child_types to an empty list
-#         For each child of this Node
-#             Append EXPRESSION_TYPE(child) to child_types
-#         return child_types
+    def _child_types(children):
+        child_types = []
+        for child in children:
+            child_types.append(self.expression_type(child))
+        return child_types
 
 #     _NEXT_EXPRESSION(child_types):
 #         Initialize expression to an empty list
