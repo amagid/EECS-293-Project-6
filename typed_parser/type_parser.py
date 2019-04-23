@@ -59,8 +59,7 @@ class TypeParser:
                 expression.append(self._subexpression_type(child_types[:2]))
                 child_types = child_types[2:]
             else:
-                expression.append(child)
-                child_types.pop(0)
+                expression.append(child_types.pop(0))
         return expression
 
     def _has_unary_negation(self, expression, child_types):
