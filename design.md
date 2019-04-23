@@ -4,20 +4,9 @@ The fundamental idea behind this algorithm is to take a valid parse tree and per
 
 ## Classes & Enums
 
-#### Type Enum
-
-The Type enum lists the available types in the system. There are no restrictions given on the number or specifications of the types in this enum. It merely provides a symbolic representation of the types.
-
-The Type Enum contains an additional INVALID type which is used when no TypeRule can be matched to a given expression part.
-
-class Type(Enum):
-    INT = 1
-    STRING = 2
-    etc...
-
 #### TypeRule Class
 
-Instances of the TypeRule class define how to determine the type of an expression structure. A TypeRule has an internally-stored Connector and one or two Types representing the types of the operands to the Connector.
+Instances of the TypeRule class define how to determine the type of an expression structure. A TypeRule has an internally-stored Connector and one or two types representing the types of the operands to the Connector.
 
 The TypeRule exposes a TypeRule.apply(Node) method which returns the Type resulting from applying the given TypeRule on the expression rooted at Node. This method returns Type.INVALID if the TypeRule cannot be applied to this Node.
 
